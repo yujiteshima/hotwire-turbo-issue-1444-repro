@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turbo 8.0.13 – #1444 Repro</title>
+  <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.13/dist/turbo.es2017-esm.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; padding: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    a.btn { display: inline-block; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; }
+    .muted { color: #666; }
+    .ok { color: #0a7; }
+  </style>
+</head>
+<body>
+  <h1>Turbo 8.0.13</h1>
+  <p class="muted">Open DevTools network tab to observe <strong>DELETE /logout</strong> requests.</p>
+  <div class="grid">
+    <a class="btn" href="/logout" data-turbo-method="DELETE" target>DELETE with bare <code>target</code></a>
+    <a class="btn" href="/logout" data-turbo-method="DELETE" target="">DELETE with <code>target=""</code></a>
+    <a class="btn" href="/logout" data-turbo-method="DELETE" target="_self">DELETE with <code>target="_self"</code></a>
+    <a class="btn" href="/" >Back</a>
+  </div>
+  <hr />
+  <p>Status: <span id="status" class="muted">click any DELETE link…</span></p>
+  <script type="module">
+    async function refreshCount() {
+      const r = await fetch('/_count');
+      const data = await r.json();
+      document.getElementById('status').textContent = `DELETE count: ${data.deleteCount}`;
+    }
+    window.addEventListener('turbo:load', refreshCount);
+    document.addEventListener('click', (e) => setTimeout(refreshCount, 200));
+  </script>
+</body>
+</html>

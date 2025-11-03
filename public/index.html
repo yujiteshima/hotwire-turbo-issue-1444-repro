@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turbo #1444 Repro</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; padding: 24px; }
+    code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
+    a.box { display:block; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <h1>Turbo Issue #1444 – empty <code>target</code> regression</h1>
+  <p>Open one of the pages below to test the behavior with different Turbo versions:</p>
+  <a class="box" href="/v8_0_13">Use Turbo 8.0.13 (expected: works)</a>
+  <a class="box" href="/v8_0_14">Use Turbo 8.0.14 (expected: regression)</a>
+  <p>This repro provides three links on each page:</p>
+  <ul>
+    <li><code>&lt;a data-turbo-method="DELETE" target&gt;</code> (bare attribute)</li>
+    <li><code>&lt;a data-turbo-method="DELETE" target=""&gt;</code> (empty string)</li>
+    <li><code>&lt;a data-turbo-method="DELETE" target="_self"&gt;</code></li>
+  </ul>
+  <p>All three should be handled by Turbo as if <code>_self</code>, sending a DELETE to <code>/logout</code>.</p>
+</body>
+</html>
